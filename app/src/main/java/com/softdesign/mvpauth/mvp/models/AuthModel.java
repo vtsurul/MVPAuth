@@ -1,6 +1,6 @@
 package com.softdesign.mvpauth.mvp.models;
 
-public class AuthModel {
+public class AuthModel  extends AbstractModel {
 
     public AuthModel() {
 

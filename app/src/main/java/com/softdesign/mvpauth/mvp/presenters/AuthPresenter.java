@@ -1,38 +1,36 @@
 package com.softdesign.mvpauth.mvp.presenters;
 
-import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.softdesign.mvpauth.di.DaggerService;
+import com.softdesign.mvpauth.di.scopes.AuthScope;
 import com.softdesign.mvpauth.mvp.models.AuthModel;
 import com.softdesign.mvpauth.mvp.views.IAuthView;
 import com.softdesign.mvpauth.ui.custom_views.AuthPanel;
 
-public class AuthPresenter implements IAuthPresenter {
+import javax.inject.Inject;
 
-    private static AuthPresenter ourInstance = new AuthPresenter();
+import dagger.Provides;
 
-    private AuthModel mAuthModel;
-    private IAuthView mAuthView;
+public class AuthPresenter extends AbstractPresenter<IAuthView> implements IAuthPresenter {
+
+    private static final String TAG = "AuthPresenter";
+
+    @Inject
+    AuthModel mAuthModel;
 
 
-    private AuthPresenter() {
+    public AuthPresenter() {
         mAuthModel = new AuthModel();
-    }
 
+        Component component = DaggerService.getComponent(Component.class);
+        if (component == null) {
+            component = createDaggerComponent();
+            DaggerService.registerComponent(Component.class, component);
+        }
+        component.inject(this);
 
-    public static AuthPresenter getInstance() {
-        return ourInstance;
-    }
-
-
-    @Override
-    public void takeView(IAuthView authView) {
-        mAuthView = authView;
-    }
-
-
-    @Override
-    public void dropView() {
-        mAuthView = null;
+        Log.e(TAG, "AuthPresenter: inject complete");
     }
 
 
@@ -45,13 +43,6 @@ public class AuthPresenter implements IAuthPresenter {
                 getView().showLoginBtn();
             }
         }
-    }
-
-
-    @Nullable
-    @Override
-    public IAuthView getView() {
-        return mAuthView;
     }
 
 
@@ -96,7 +87,8 @@ public class AuthPresenter implements IAuthPresenter {
     @Override
     public void clickOnShowCatalog() {
         if (getView() != null) {
-            getView().showMessage("Показать каталог");
+            // TODO: 16.11.2016 if update data complete start catalog Screen
+            getView().showCatalogScreen();
         }
 
     }
@@ -106,4 +98,33 @@ public class AuthPresenter implements IAuthPresenter {
     public boolean checkUserAuth() {
         return mAuthModel.isAuthUser();
     }
+
+
+    //region ============================== DI ==============================
+
+
+    @dagger.Module
+    public class Module {
+        @Provides
+        @AuthScope
+        AuthModel provideAuthModel() {
+            return new AuthModel();
+        }
+    }
+
+
+    @dagger.Component(modules = Module.class)
+    @AuthScope
+    interface Component {
+        void inject(AuthPresenter presenter);
+    }
+
+
+    private Component createDaggerComponent() {
+        return DaggerAuthPresenter_Component.builder()
+                .module(new Module())
+                .build();
+    }
+
+    //endregion
 }

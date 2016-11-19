@@ -1,24 +1,33 @@
-package com.softdesign.mvpauth;
+package com.softdesign.mvpauth.ui.activities;
 
+import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 
+import com.softdesign.mvpauth.BuildConfig;
+import com.softdesign.mvpauth.R;
+import com.softdesign.mvpauth.di.DaggerService;
+import com.softdesign.mvpauth.di.scopes.AuthScope;
 import com.softdesign.mvpauth.mvp.presenters.AuthPresenter;
 import com.softdesign.mvpauth.mvp.presenters.IAuthPresenter;
 import com.softdesign.mvpauth.mvp.views.IAuthView;
 import com.softdesign.mvpauth.ui.custom_views.AuthPanel;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.Provides;
 
-public class RootActivity extends AppCompatActivity implements IAuthView, View.OnClickListener{
+public class SplashActivity extends AppCompatActivity  implements IAuthView, View.OnClickListener{
 
-    AuthPresenter mPresenter = AuthPresenter.getInstance();
+
+    @Inject
+    AuthPresenter mPresenter;
 
     @BindView(R.id.coordinator_container)
     CoordinatorLayout mCoordinatorLayout;
@@ -39,9 +48,16 @@ public class RootActivity extends AppCompatActivity implements IAuthView, View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_root);
+        setContentView(R.layout.activity_splash);
 
         ButterKnife.bind(this);
+
+        Component component = DaggerService.getComponent(Component.class);
+        if (component == null) {
+            component = createDaggerComponent();
+            DaggerService.registerComponent(Component.class, component);
+        }
+        component.inject(this);
 
         mPresenter.takeView(this);
         mPresenter.initView();
@@ -55,6 +71,9 @@ public class RootActivity extends AppCompatActivity implements IAuthView, View.O
     @Override
     protected void onDestroy() {
         mPresenter.dropView();
+        if (isFinishing()) {
+            DaggerService.unregisterScope(AuthScope.class);
+        }
         super.onDestroy();
     }
 
@@ -70,6 +89,7 @@ public class RootActivity extends AppCompatActivity implements IAuthView, View.O
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
+
     @Override
     public void showError(Throwable e) {
         if (BuildConfig.DEBUG) {
@@ -81,42 +101,48 @@ public class RootActivity extends AppCompatActivity implements IAuthView, View.O
         }
     }
 
+
     @Override
     public void showLoad() {
         // TODO: 02.11.2016 show load progress
     }
+
 
     @Override
     public void hideLoad() {
         // TODO: 02.11.2016 hide load progress
     }
 
+
     @Override
     public IAuthPresenter getPresenter() {
         return mPresenter;
     }
+
 
     @Override
     public void showLoginBtn() {
         mLoginBtn.setVisibility(View.VISIBLE);
     }
 
+
     @Override
     public void hideLoginBtn() {
         mLoginBtn.setVisibility(View.GONE);
     }
 
-/*
-    @Override
-    public void testShowLoginCard() {
-
-        mAuthCard.setVisibility(View.VISIBLE);
-    }
-*/
 
     @Override
     public AuthPanel getAuthPanel() {
         return mAuthPanel;
+    }
+
+
+    @Override
+    public void showCatalogScreen() {
+        Intent intent = new Intent(this, RootActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
@@ -146,4 +172,35 @@ public class RootActivity extends AppCompatActivity implements IAuthView, View.O
                 break;
         }
     }
+
+
+    //region ============================== DI ==============================
+
+
+    @dagger.Module
+    public class Module {
+
+        @Provides
+        @AuthScope
+        AuthPresenter provideAuthPresenter() {
+            return new AuthPresenter();
+        }
+    }
+
+
+    @dagger.Component(modules = Module.class)
+    @AuthScope
+    interface Component {
+        void inject(SplashActivity activity);
+    }
+
+
+    private Component createDaggerComponent() {
+        return DaggerSplashActivity_Component.builder()
+                .module(new Module())
+                .build();
+    }
+
+
+    //endregion
 }
