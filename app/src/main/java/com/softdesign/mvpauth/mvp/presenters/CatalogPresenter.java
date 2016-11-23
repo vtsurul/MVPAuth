@@ -28,6 +28,7 @@ public class CatalogPresenter extends AbstractPresenter<ICatalogView> implements
     public CatalogPresenter() {
         Component component = DaggerService.getComponent(Component.class);
         if (component == null) {
+            component = createDaggerComponent();
             DaggerService.registerComponent(Component.class, component);
         }
         component.inject(this);

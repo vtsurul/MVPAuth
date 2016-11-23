@@ -60,6 +60,7 @@ public class CatalogFragment extends Fragment implements ICatalogView, View.OnCl
         mPresenter.takeView(this);
         mPresenter.initView();
         addToCardBtn.setOnClickListener(this);
+
         return view;
     }
 

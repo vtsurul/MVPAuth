@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.Provides;
 
-public class SplashActivity extends AppCompatActivity  implements IAuthView, View.OnClickListener{
+public class SplashActivity extends AppCompatActivity implements IAuthView, View.OnClickListener{
 
 
     @Inject
@@ -176,6 +176,11 @@ public class SplashActivity extends AppCompatActivity  implements IAuthView, Vie
 
     //region ============================== DI ==============================
 
+    private Component createDaggerComponent() {
+        return DaggerSplashActivity_Component.builder()
+                .module(new Module())
+                .build();
+    }
 
     @dagger.Module
     public class Module {
@@ -193,14 +198,6 @@ public class SplashActivity extends AppCompatActivity  implements IAuthView, Vie
     interface Component {
         void inject(SplashActivity activity);
     }
-
-
-    private Component createDaggerComponent() {
-        return DaggerSplashActivity_Component.builder()
-                .module(new Module())
-                .build();
-    }
-
 
     //endregion
 }

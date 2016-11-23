@@ -1,13 +1,271 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.softdesign.mvpauth.ui.fragments.AccountFragment">
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="246dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <!--todo: Попробовать заменить frameLayout на relativeLayout, реализовать customBehavior для скролинга аватара -->
+            <!--FrameLayout app:layout_collapseMode="parallax"-->
+
+            <RelativeLayout
+                android:id="@+id/header_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/header_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="186dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/account_header"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/roboto_medium"
+                    android:text="@string/app_name"
+                    android:textSize="@dimen/font_24"
+                    android:textColor="@color/white"
+                    android:gravity="center_horizontal"
+                    android:layout_above="@+id/user_avatar"
+                    android:layout_marginBottom="@dimen/spacing_8"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_avatar"
+                    android:layout_width="@dimen/account.avatar_size"
+                    android:layout_height="@dimen/account.avatar_size"
+                    android:src="@drawable/user_avatar"
+                    app:civ_border_color="@color/color_accent"
+                    app:civ_border_width="2dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"/>
+
+            </RelativeLayout>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:paddingLeft="@dimen/spacing_16"
+        android:paddingRight="@dimen/spacing_16"
+        android:paddingTop="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/AccountIcon"
+                    android:src="@drawable/ic_call_24dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/font_14"
+                        android:hint="Телефон:"
+                        android:text="+8(913)458-4458"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <View style="@style/HorizontalDivider"/>
+
+            <TextView
+                style="@style/AccountTitle"
+                android:text="Адрес доставки:"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/AccountIcon"
+                    android:src="@drawable/ic_location_on_24dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/address_name_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Дом:"
+                            android:text="Автостроителей 24-43, 6 этаж"
+                            android:textSize="@dimen/font_14"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/address_comment_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Комментарий:"
+                            android:text="6 этаж"
+                            android:textSize="@dimen/font_14"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <View style="@style/HorizontalDivider"/>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    style="@style/AccountIcon"
+                    android:src="@drawable/ic_location_on_24dp"
+                    android:id="@+id/imageView"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/job_name_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Работа:"
+                            android:text="Автостроителей 24-43, 6 этаж"
+                            android:textSize="@dimen/font_14"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/job_comment_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Комментарий:"
+                            android:text="Единственный офис на этаже"
+                            android:textSize="@dimen/font_14"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <View style="@style/HorizontalDivider"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/add_address_button"
+                style="@style/CustomButton"
+                android:theme="@style/StartBtn"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:textColor="@android:color/white"
+                android:text="Добавить адрес"/>
+
+            <View style="@style/HorizontalDivider"/>
+
+            <TextView
+                style="@style/AccountTitle"
+                android:text="PUSH-уведомления"
+                android:layout_margin="@dimen/spacing_8"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/spacing_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Уведомлять о статусе заказов"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/notify_status_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/spacing_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Уведомлять о спец предложениях"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/notify_offers_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/account.user_avatar"-->
+        <!--android:layout_width="@dimen/account.avatar_size"-->
+        <!--android:layout_height="@dimen/account.avatar_size"-->
+        <!--app:layout_behavior=".ui.custom_views.behaviors.AvatarBehavior"-->
+        <!--android:src="@drawable/user_avatar"/>-->
+
+</android.support.design.widget.CoordinatorLayout>

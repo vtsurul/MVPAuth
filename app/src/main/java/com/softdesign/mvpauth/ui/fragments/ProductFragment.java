@@ -22,6 +22,7 @@ import com.softdesign.mvpauth.di.scopes.ProductScope;
 import com.softdesign.mvpauth.mvp.presenters.ProductPresenter;
 import com.softdesign.mvpauth.mvp.views.IProductView;
 import com.softdesign.mvpauth.ui.activities.RootActivity;
+import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -90,22 +91,30 @@ public class ProductFragment extends Fragment implements IProductView, View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product, container, false);
+
         ButterKnife.bind(this, view);
+
         readBundle(getArguments());
+
         mPresenter.takeView(this);
         mPresenter.initView();
+
         plusBtn.setOnClickListener(this);
         minusBtn.setOnClickListener(this);
+
         return view;
     }
 
 
     @Override
     public void onDestroyView() {
+        Log.e("CATALOG ADAPTER", "onDestroyView " + mPresenter.getProduct().getProductName());
         mPresenter.dropView();
+        mPresenter = null;
+        minusBtn.setOnClickListener(null);
+        plusBtn.setOnClickListener(null);
         super.onDestroyView();
     }
-
 
     //region ============================== IProductView ==============================
 
@@ -132,11 +141,11 @@ public class ProductFragment extends Fragment implements IProductView, View.OnCl
 
                     @Override
                     public void onError() {
-                        mPicasso.load(product.getImageUrl())
+                        Log.e(TAG, "onError: load from cache");
+                        mPicasso.load(R.drawable.radio_image)
                                 .fit()
                                 .centerCrop()
                                 .into(productImage);
-
                     }
                 });
     }
@@ -174,6 +183,7 @@ public class ProductFragment extends Fragment implements IProductView, View.OnCl
     //region ============================== DI ==============================
 
     private Component createDaggerComponent(ProductDto product) {
+
         PicassoComponent picassoComponent = DaggerService.getComponent(PicassoComponent.class);
         if (picassoComponent == null) {
             picassoComponent = DaggerPicassoComponent.builder()
@@ -182,6 +192,7 @@ public class ProductFragment extends Fragment implements IProductView, View.OnCl
                     .build();
             DaggerService.registerComponent(PicassoComponent.class, picassoComponent);
         }
+
         return DaggerProductFragment_Component.builder()
                 .picassoComponent(picassoComponent)
                 .module(new Module(product))

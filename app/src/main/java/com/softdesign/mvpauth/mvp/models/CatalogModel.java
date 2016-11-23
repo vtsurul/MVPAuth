@@ -7,12 +7,6 @@ import java.util.List;
 
 public class CatalogModel extends AbstractModel{
 
-    //DataManager mDataManager = DataManager.getInstance();
-
-    public CatalogModel() {
-    }
-
-
     public List<ProductDto> getProductList() {
         return mDataManager.getProductList();
     }

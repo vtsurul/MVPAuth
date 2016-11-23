@@ -69,6 +69,7 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
 
         initToolbar();
         initDrawer();
+
         mRootPresenter.takeView(this);
         mRootPresenter.initView();
         // TODO: 18.11.2016 init View 
@@ -111,7 +112,6 @@ public class RootActivity extends AppCompatActivity implements IRootView, Naviga
                 fragment = new AccountFragment();
                 break;
             case R.id.nav_catalog:
-                // TODO: 17.11.2016 show catalog
                 fragment = new CatalogFragment();
                 break;
             case R.id.nav_favorites:

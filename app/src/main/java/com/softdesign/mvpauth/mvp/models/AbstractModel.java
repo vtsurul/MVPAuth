@@ -18,7 +18,7 @@ public abstract class AbstractModel {
         ModelComponent component = DaggerService.getComponent(ModelComponent.class);
         if (component == null) {
             component = createDaggerComponent();
-            DaggerService.registerComponent(DataManagerComponent.class, component);
+            DaggerService.registerComponent(ModelComponent.class, component);
         }
         component.inject(this);
     }

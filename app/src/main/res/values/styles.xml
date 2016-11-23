@@ -94,7 +94,6 @@
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">12dp</item>
         <item name="android:layout_gravity">center_horizontal</item>
     </style>
 
@@ -117,6 +116,38 @@
     <style name="ShowBtn" parent="Base.Widget.AppCompat.Button">
         <item name="colorButtonNormal">@android:color/white</item>
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AccountTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_16</item>
+        <item name="android:fontFamily">@string/roboto_regular</item>
+        <item name="android:textSize">@dimen/font_16</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AccountIcon">
+        <item name="android:layout_width">@dimen/size_24</item>
+        <item name="android:layout_height">@dimen/size_24</item>
+        <item name="android:layout_marginTop">@dimen/spacing_16</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_16</item>
+        <item name="android:layout_marginRight">@dimen/spacing_16</item>
+    </style>
+
+    <style name="AccountSwitch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/spacing_16</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_16</item>
+        <item name="android:fontFamily">@string/roboto_regular</item>
+    </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/grey_light</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_4</item>
     </style>
 
 </resources>

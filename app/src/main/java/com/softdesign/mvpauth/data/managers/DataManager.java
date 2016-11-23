@@ -59,7 +59,7 @@ public class DataManager {
 
     private void generateMockData() {
         mMockProductList = new ArrayList<>();
-        mMockProductList.add(new ProductDto(1, "test 1", "imageUrl", "description 1 description 1 description 1 description 1description 1", 100, 10));
+        mMockProductList.add(new ProductDto(1, "test 1", "http://c.dns-shop.ru/thumb/st1/fit/wm/2000/1913/4e2cba88023b6f0ad4749609f3fc0e4b/759f7c38a97f54efb6f620f1425ff05c0d965380798527dff8bb8545a8b6c41c.jpg", "description 1 description 1 description 1 description 1description 1", 100, 10));
         mMockProductList.add(new ProductDto(2, "test 2", "imageUrl", "description 1 description 1 description 1 description 1description 1", 200, 10));
         mMockProductList.add(new ProductDto(3, "test 3", "imageUrl", "description 1 description 1 description 1 description 1description 1", 300, 10));
         mMockProductList.add(new ProductDto(4, "test 4", "imageUrl", "description 1 description 1 description 1 description 1description 1", 400, 10));

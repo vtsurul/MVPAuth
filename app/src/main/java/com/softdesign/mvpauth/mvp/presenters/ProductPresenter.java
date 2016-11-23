@@ -1,10 +1,12 @@
 package com.softdesign.mvpauth.mvp.presenters;
 
+import com.softdesign.mvpauth.App;
 import com.softdesign.mvpauth.data.storage.dto.ProductDto;
 import com.softdesign.mvpauth.di.DaggerService;
 import com.softdesign.mvpauth.di.scopes.ProductScope;
 import com.softdesign.mvpauth.mvp.models.ProductModel;
 import com.softdesign.mvpauth.mvp.views.IProductView;
+import com.squareup.leakcanary.RefWatcher;
 
 import javax.inject.Inject;
 
@@ -12,9 +14,15 @@ import dagger.Provides;
 
 public class ProductPresenter extends AbstractPresenter<IProductView> implements IProductPresenter {
     private static final String TAG = "ProductPresenter";
+
     @Inject
     ProductModel mProductModel;
+
     private ProductDto mProduct;
+
+    public ProductDto getProduct() {
+        return mProduct;
+    }
 
 
     public ProductPresenter(ProductDto product) {
@@ -24,9 +32,10 @@ public class ProductPresenter extends AbstractPresenter<IProductView> implements
             DaggerService.registerComponent(ProductPresenter.Component.class, component);
         }
         component.inject(this);
-        mProduct = product;
-    }
 
+        mProduct = product;
+
+    }
 
     @Override
     public void initView() {
@@ -34,7 +43,6 @@ public class ProductPresenter extends AbstractPresenter<IProductView> implements
             getView().showProductView(mProduct);
         }
     }
-
 
     @Override
     public void clickOnPlus() {
